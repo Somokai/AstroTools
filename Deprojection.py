@@ -5,6 +5,8 @@ import numpy as np
 import scipy
 from scipy import ndimage
 
+#-----------------------Basic Parameters for Figure---------------------------#
+
 #Image file, make sure you either have the path or run this in the correct folder
 img = 'example.fits'
 
@@ -14,7 +16,7 @@ xH = 500
 yL = 0
 yH = 150
 
-
+#---------------------Code Below for Advanced Changes------------------------#                   
 
 def search(image, i, j):
     count = 0
@@ -97,7 +99,7 @@ def scan_plot(image, center):
     plt.xticks(axis, my_xticks)
     plt.show
 
-
+#--------------------------Function Calls and Plotting---------------------------#
     
 
 hdu_list = fits.open(img)
@@ -108,9 +110,9 @@ img = img[0][0]
 
 plt.figure()
 plt.imshow(img, origin = 'lower')
-image = deproject(img, 22, 45)
+img = deproject(img, 22, 45)
 fill(image)
-scan_plot(image, (607, 431))
+scan_plot(img, (607, 431))
 plt.xlim(xL,xH)
 plt.ylim(yL,yH)
 
