@@ -7,6 +7,15 @@ import numpy as np
 #Data Cube to be Used
 dataCube = 'pds70cube/calibrated.ms.contsub.CO32_final.fits'
 
+#Limits of the plot
+xL = 7
+xH = 170
+yL = 0
+yH = 138
+
+#Name of the output file
+outputName = 'output.png'
+
 #---------------------Code Below for Advanced Changes------------------------#  
 
 def integ_inten(x,y,r,img):
@@ -57,9 +66,9 @@ def d_slice(angle, img, norm, offset,centering,scale,intrad, normalize):
 
 def fit(mass, tilt, col):
     v = []
+    r = []
     G = 6.674E-11/(1E9)
     radius = 0.01
-    r = []
     mass = mass*2E30
     tilt = tilt*np.pi/180
 
@@ -67,14 +76,16 @@ def fit(mass, tilt, col):
         v.append(np.sin(tilt)*np.sqrt(G * mass/(radius*2.1*1.5E8))/0.211+72.5)
         r.append(radius+88)
         radius += 0.1
-    ax.plot(imgFitL1[0], imgFitL1[1], color = col, linewidth = 2, linestyle='--')
+    ax.plot(r, v, color = col, linewidth = 2, linestyle='--')
     
+    v = []
+    r = []
     radius = -0.01    
     while radius > -88:
         v.append(-np.sin(tilt)*np.sqrt(G * mass/(-radius*2.1*1.5E8))/0.211+72.5)
         r.append(radius+88)
         radius -= 0.1
-    ax.plot(imgFitL1[0], imgFitL1[1], color = col, linewidth = 2, linestyle='--')
+    ax.plot(r, v, color = col, linewidth = 2, linestyle='--')
 
 #--------------------------Function Calls and Plotting---------------------------#
     
@@ -102,15 +113,15 @@ while i < 200:
   
 ax.imshow(image, origin = 'lower')
 
-plt.xlim(7,170)
-plt.ylim(0,138)
+plt.xlim(xL,xH)
+plt.ylim(yL,yH)
 
-plt.xticks([12.8, 31.6, 50.4, 69.2, 88, 106.8, 125.4, 144.4, 164.2])
-ax.set_xticklabels([-200, -150, -100, -50, 0, 50, 100, 150, 200])
+'''plt.xticks([12.8, 31.6, 50.4, 69.2, 88, 106.8, 125.4, 144.4, 164.2])
+ax.set_xticklabels([-200, -150, -100, -50, 0, 50, 100, 150, 200])'''
 plt.xlabel('Offset (AU)')
-plt.yticks([11.8, 26, 40.2, 54.3, 68.5, 82.7, 96.8, 111, 125.1])
-ax.set_yticklabels([-12, -9, -6, -3, 0, 3, 6, 9, 12])
+'''plt.yticks([11.8, 26, 40.2, 54.3, 68.5, 82.7, 96.8, 111, 125.1])
+ax.set_yticklabels([-12, -9, -6, -3, 0, 3, 6, 9, 12])'''
 plt.ylabel('Velocity (km/s)')
 
-plt.savefig('dynamical_fit.png', dpi = 300)
+plt.savefig(outputName, dpi = 300)
 plt.show()
