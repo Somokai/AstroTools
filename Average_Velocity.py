@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 from astropy.io import fits
 import numpy as np
 
+#---------------------Basic File Input--------------------------#
+
 #Image file being used
 img = 'example.fits'
 
